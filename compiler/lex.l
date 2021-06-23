@@ -6,6 +6,7 @@
 
 number  -?[0-9]+
 variable [a-zA-Z]([a-zA-Z0-9]|_|-)*
+string \"[^\"]*\"
 
 %%
 
@@ -13,7 +14,8 @@ variable [a-zA-Z]([a-zA-Z0-9]|_|-)*
 "number"                { return NUMBER; }
 "text"                  { return TEXT; }
 "called"                { return CALLED; }
-"save into"             { return SAVE; }
+"save"                  { return SAVE; }
+"into"                  { return INTO; }
 "print"                 { return PRINT; }
 "read"                  { return READ; }
 "is different from"     { return DIFF; }
@@ -32,7 +34,9 @@ variable [a-zA-Z]([a-zA-Z0-9]|_|-)*
 "while"                 { return WHILE; }
 "repeat"                { return REPEAT; }
 "do"                    { return DO; }
-/* . ( ) “ “ : */
+"("                     { return OPEN_PAR; }
+")"                     { return CLOSE_PAR; }
+":"                     { return COLON; }
 "."                     { return END_OF_LINE; }
 "main"                  { return MAIN; }
 "start"                 { return START; }
