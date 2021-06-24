@@ -4,17 +4,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef enum types {TEXT, NUM, SIMBOL, EMPTY} type;
+typedef enum types {TEXT, NUMBER, CONSTANT, EMPTY, OPERATION} type;
 
-typedef struct Node_t {
+typedef struct node_t {
     type type;
     char * value;
 
-    struct Node_t * parent;
-    struct Node_t * children;
-    struct Node_t * next;
-} Node_t;
+    struct node_t * parent;
+    struct node_t * children;
+    struct node_t * next;
+} node_t;
 
-Node_t * createNode(type type, char * value);
-void appendNode(Node_t * parent, Node_t * node);
+node_t * create_node(type type, char * value);
+void append_node(node_t * parent, node_t * node);
 #endif

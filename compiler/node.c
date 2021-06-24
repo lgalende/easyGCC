@@ -1,8 +1,8 @@
 #include "node.h"
 #include <stdio.h>
 
-Node_t * createNode(type type, char * value){
-    Node_t * n = malloc(sizeof(Node_t));
+node_t * create_node(type type, char * value){
+    node_t * n = malloc(sizeof(node_t));
     n->type = type;
     n->value = value;
     n->children = NULL;
@@ -11,13 +11,13 @@ Node_t * createNode(type type, char * value){
     return n;
 }
 
-void appendNode(Node_t * parent, Node_t * node){
+void append_node(node_t * parent, node_t * node){
     if(node == NULL || parent == NULL)
         return;
     if(parent->children == NULL)
         parent->children = node;
     else {
-        Node_t * n = parent->children;
+        node_t * n = parent->children;
         while (n->next != NULL){
             n = n->next;
         }
