@@ -6,7 +6,7 @@
 
 %union{
     node_t *node;
-    char *value;
+    char value[1024];
 }
 
 /* Tokens */
@@ -19,7 +19,7 @@
 
 %type<node> program code instruction declaration assignment term condition else expression comparator type op
 
-%token<value> number_val text_val VARNAME
+%token<value> NUMBER_VAL TEXT_VAL VARNAME
 
 %start  program
 
@@ -84,9 +84,9 @@
 
                     | OPEN_PAR expression CLOSE_PAR             {}
 
-    term:           number_val                                  {}
+    term:           NUMBER_VAL                                  {}
 
-                    | text_val                                  {}
+                    | TEXT_VAL                                  {}
 
                     | VARNAME                                   {}
 
