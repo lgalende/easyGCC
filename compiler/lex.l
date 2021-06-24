@@ -41,5 +41,25 @@ string \"[^\"]*\"
 "main"                  { return MAIN; }
 "start"                 { return START; }
 "finish"                { return FINISH; }
+"start ignoring"        { return START_IGNORING; }
+"stop ignoring"         { return STOP_IGNORING; }
+[\t \n]                 { /* if space, tab or new line, then nothing to do */ ; }
+
+{number}    {
+              yylval.number = atoi(yytext);
+              return number_val;
+            }
+
+{string}    {
+              strcpy(yylval.string, yytext);
+              return text_val;
+            }
+
+{variable}  {
+              strcpy(yylval.string, yytext);
+              return VARNAME;
+            }
+
+.           { return yytext[0]; } /* si no hay match, devolvemos el caracter */
 
 %%
