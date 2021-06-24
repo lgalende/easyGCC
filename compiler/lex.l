@@ -46,17 +46,17 @@ string \"[^\"]*\"
 [\t \n]                 { /* if space, tab or new line, then nothing to do */ ; }
 
 {number}    {
-              yylval.number = atoi(yytext);
-              return number_val;
+              strcpy(yylval.value, yytext);
+              return NUMBER_VAL;
             }
 
 {string}    {
-              strcpy(yylval.string, yytext);
-              return text_val;
+              strcpy(yylval.value, yytext);
+              return TEXT_VAL;
             }
 
 {variable}  {
-              strcpy(yylval.string, yytext);
+              strcpy(yylval.value, yytext);
               return VARNAME;
             }
 
