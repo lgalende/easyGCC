@@ -38,7 +38,6 @@ string \"[^\"]*\"
 ")"                     { return CLOSE_PAR; }
 ":"                     { return COLON; }
 "."                     { return END_OF_LINE; }
-"main"                  { return MAIN; }
 "start"                 { return START; }
 "finish"                { return FINISH; }
 "start ignoring"        { return START_IGNORING; }
