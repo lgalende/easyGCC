@@ -13,6 +13,7 @@ string \"[^\"]*\"
 %%
 
 "create"                { return CREATE; }
+"const"                 { return CONST; }
 "number"                { return NUMBER; }
 "text"                  { return TEXT; }
 "called"                { return CALLED; }

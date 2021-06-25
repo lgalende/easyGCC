@@ -3,6 +3,8 @@
     #include "node.h"
     #include "operations.h"
     #include "compiler.h"
+    #include "variables.h"
+
     extern int line_no;
     int yylex();
 %}
@@ -105,7 +107,7 @@
                                                                     append_node($$, create_node(CONSTANT, "}"));
                                                                 }
 
-                    // TODO AGREGAR PRODUCCION LAMDA
+                    // TODO AGREGAR PRODUCCION LAMBDA
                     ;
 
     condition:      expression comparator expression            {   $$ = create_node(EMPTY, NULL);
@@ -173,20 +175,30 @@
                     | VARNAME                                   {   $$ = create_node(CONSTANT, $1);   }
                     ;
 
-    declaration:    CREATE type CALLED VARNAME                  {   $$ = create_node(EMPTY, NULL);
+    declaration:    CREATE type CALLED VARNAME                  {   if(exists_var($4))
+                                                                        yyerror("Variable already exists");
+                                                                    if(add_var($4, $2->type, 0) // const = false
+                                                                        yyerror("Maximum amount of variables has been reached");
+                                                                    $$ = create_node(EMPTY, NULL);
                                                                     append_node($$, $2);
                                                                     append_node($$, create_node(CONSTANT, $4));
                                                                 }
+
+                    | CREATE CONST type CALLED VARNAME          {   if(exists_var($5))
+                                                                        yyerror("Variable already exists");
+                                                                    if(add_var($5, $3->type, 1) // const = true
+                                                                        yyerror("Maximum amount of variables has been reached");
+                                                                    $$ = create_node(EMPTY, NULL);
+                                                                    append_node($$, $3);
+                                                                    append_node($$, create_node(CONSTANT, $5));
+                                                                }
                     ;
 
-    assignment:     SAVE expression INTO VARNAME              {   
-                                                                    if(!exists_var($4)){
+    assignment:     SAVE expression INTO VARNAME              {     int node_type = get_var_type($4);
+                                                                    if(node_type == -1)
                                                                         yyerror("Undefined variable");
-                                                                    }
-                                                                    int node_type = get_type($4);
-                                                                    if(node_type != $2->type){
-                                                                        yyerror("Incompatible variable types" );
-                                                                    }
+                                                                    if(node_type != $2->type)
+                                                                        yyerror("Incompatible types in variable assignment");
                                                                     $$ = create_node(EMPTY, NULL);
                                                                     append_node($$, create_node(CONSTANT, $4));
                                                                     append_node($$, create_node(CONSTANT, " = "));
