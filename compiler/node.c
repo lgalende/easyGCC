@@ -1,5 +1,6 @@
 #include "node.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 node_t * create_node(type type, char * value){
     node_t * n = malloc(sizeof(node_t));
@@ -24,4 +25,18 @@ void append_node(node_t * parent, node_t * node){
         n->next = node;
     }
     node->parent = parent;
+}
+
+void spitOutCode(node_t * node) {
+    if(node->type == EMPTY) {
+        node_t * aux = node->children;
+        while(aux != NULL) {
+            printInorder(aux);
+            aux = aux->next;
+        }
+    }else if(node->type != EMPTY && node->value != NULL) {
+        FILE *output;
+        fprintf(output, "%s", node->value);
+    }
+
 }
