@@ -18,7 +18,7 @@
 /* Tokens */
 
 %token START FINISH 
-%token PRINT END_OF_LINE READ CREATE CALLED SAVE INTO OPEN_PAR CLOSE_PAR COLON
+%token PRINT END_OF_LINE READ CREATE CONST CALLED SAVE INTO OPEN_PAR CLOSE_PAR COLON
 %token WHILE REPEAT IF DO END ELSE 
 %token AND OR PLUS MINUS MULTIPLY DIVIDE GREATER LOWER EQUAL DIFF
 %token NUMBER TEXT
@@ -181,7 +181,10 @@
                                                                         yyerror("Maximum amount of variables has been reached");
                                                                     $$ = create_node(EMPTY, NULL);
                                                                     append_node($$, $2);
-                                                                    append_node($$, create_node(CONSTANT, $4));
+                                                                    if($2 == NUMBER)
+                                                                        append_node($$, create_node(NUMBER_VARIABLE, $4));
+                                                                    if($2 == TEXT)
+                                                                        append_node($$, create_node(TEXT_VARIABLE, $4));
                                                                 }
 
                     | CREATE CONST type CALLED VARNAME          {   if(exists_var($5))
@@ -190,7 +193,10 @@
                                                                         yyerror("Maximum amount of variables has been reached");
                                                                     $$ = create_node(EMPTY, NULL);
                                                                     append_node($$, $3);
-                                                                    append_node($$, create_node(CONSTANT, $5));
+                                                                    if($2 == NUMBER)
+                                                                        append_node($$, create_node(NUMBER_VARIABLE, $5));
+                                                                    if($2 == TEXT)
+                                                                        append_node($$, create_node(TEXT_VARIABLE, $5));
                                                                 }
                     ;
 
@@ -200,7 +206,10 @@
                                                                     if(node_type != $2->type)
                                                                         yyerror("Incompatible types in variable assignment");
                                                                     $$ = create_node(EMPTY, NULL);
-                                                                    append_node($$, create_node(CONSTANT, $4));
+                                                                    if($2 == NUMBER)
+                                                                        append_node($$, create_node(NUMBER_VARIABLE, $4));
+                                                                    if($2 == TEXT)
+                                                                        append_node($$, create_node(TEXT_VARIABLE, $4));
                                                                     append_node($$, create_node(CONSTANT, " = "));
                                                                     append_node($$, $2);
                                                                 }
