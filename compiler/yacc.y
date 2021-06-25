@@ -202,6 +202,8 @@
     assignment:     SAVE expression INTO VARNAME              {     int node_type = get_var_type($4);
                                                                     if(node_type == -1)
                                                                         yyerror("Undefined variable");
+                                                                    if(is_const($4) == 2)
+                                                                        yyerror("Trying to modify const value");
                                                                     if(node_type != $2->type)
                                                                         yyerror("Incompatible types in variable assignment");
                                                                     $$ = create_node(EMPTY, NULL);
@@ -213,6 +215,8 @@
                     | PLEASE SAVE expression INTO VARNAME       {   int node_type = get_var_type($4);
                                                                     if(node_type == -1)
                                                                         yyerror("Undefined variable");
+                                                                    if(is_const($4) == 2)
+                                                                        yyerror("Trying to modify const value");
                                                                     if(node_type != $2->type)
                                                                         yyerror("Incompatible types in variable assignment");
                                                                     $$ = create_node(EMPTY, NULL);
