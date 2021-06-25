@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-FILE * cFile;
-#define TMP_FILE_NAME "compiler_mid.tmp.c"
+FILE *c_file;
+#define TMP_FILE_NAME "tmp.c"
 
 void print_headers();
 

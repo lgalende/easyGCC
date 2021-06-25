@@ -1,10 +1,13 @@
 %{
 	#include <stdio.h>
 	#include <stdlib.h>
+  #include <string.h>
 	#include "y.tab.h"  /* archivo generado por yacc */
 
   int line_no = 1;
 %}
+
+%option noyywrap
 
 number  -?[0-9]+
 variable [a-zA-Z]([a-zA-Z0-9]|_|-)*
@@ -19,7 +22,7 @@ string \"[^\"]*\"
 "list of"               { return LISTOF; }
 "with"                  { return WITH; }
 "items"                 { return ITEMS; }
-"item"                 { return ITEM; }
+"item"                  { return ITEM; }
 "called"                { return CALLED; }
 "save"                  { return SAVE; }
 "into"                  { return INTO; }
@@ -33,7 +36,6 @@ string \"[^\"]*\"
 "minus"                 { return MINUS; }
 "multiplied by"         { return MULTIPLY; }
 "divided by"            { return DIVIDE; }
-"module"                { return MODULE; }
 "or"                    { return OR; }
 "and"                   { return AND; }
 "if"                    { return IF; }
@@ -48,23 +50,27 @@ string \"[^\"]*\"
 "\n"                    { line_no++; }
 "start"                 { return START; }
 "finish"                { return FINISH; }
-"start ignoring"        { return START_IGNORING; }
-"stop ignoring"         { return STOP_IGNORING; }
 "please"                { return PLEASE;}
-[\t \n]                 { /* if space, tab or new line, then nothing to do */ ; }
+[\t ]                 { /* if space, tab or new line, then nothing to do */ ; }
 
 {number}    {
-              strcpy(yylval.value, yytext);
+              char *s = malloc(strlen(yytext)+1);
+              strcpy(s, yytext);
+              yylval.value = s;
               return NUMBER_VAL;
             }
 
 {string}    {
-              strcpy(yylval.value, yytext);
+              char *s = malloc(strlen(yytext)+1);
+              strcpy(s, yytext);
+              yylval.value = s;
               return TEXT_VAL;
             }
 
 {variable}  {
-              strcpy(yylval.value, yytext);
+              char *s = malloc(strlen(yytext)+1);
+              strcpy(s, yytext);
+              yylval.value = s;
               return VARNAME;
             }
 

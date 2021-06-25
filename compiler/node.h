@@ -6,8 +6,8 @@
 
 typedef enum types
 {
-    TEXT,
-    NUMBER,
+    TEXT_T,
+    NUMBER_T,
     CONSTANT,
     EMPTY,
     OPERATION

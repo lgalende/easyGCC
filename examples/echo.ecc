@@ -1,0 +1,8 @@
+start
+    create text called varav.
+    please save "Hola\n" into varav.
+    print varav.
+    create number called vari.
+    please save 12 into vari.
+    print vari.
+finish

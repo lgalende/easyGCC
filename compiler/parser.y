@@ -2,7 +2,6 @@
     #include <stdio.h>
     #include <string.h>
     #include "node.h"
-    #include "operations.h"
     #include "compiler.h"
     #include "variables.h"
 
@@ -12,12 +11,16 @@
     int yylex();
     int assignment_count = 0;
     int please_count = 0;
+
+    void yyerror(char *msg);
+    void check_var(char *varname, type type);
+    void define_array_var(node_t *parent, node_t *expression, char *varname, char *val);
 %}
 
 
 %union{
-    node_t *node;
-    char value[MAX_VALUE_SIZE];
+    struct node_t *node;
+    char *value;
 }
 
 /* Tokens */
@@ -46,6 +49,7 @@
                                                                         yyerror("You are so rude. Try being more polite.");
                                                                     }
                                                                     print_headers();
+                                                                    spit_out_code($$);
                                                                 }
                     ;
 
@@ -58,7 +62,7 @@
                                                                     append_node($$, $2);
                                                                 }
 
-                    //TODO Agregar produccion LAMDA
+                    |                                           { $$ = NULL;}
                     ;
 
     instruction:    declaration END_OF_LINE                     {   $$ = create_node(EMPTY, NULL);
@@ -71,19 +75,22 @@
                                                                     append_node($$, create_node(CONSTANT, ";"));
                                                                 }
 
-                    | PRINT term END_OF_LINE                    {   $$ = create_node(EMPTY, NULL);
-                                                                    if($2->type == NUMBER)
-                                                                        append_node($$, create_node(CONSTANT, "printf(\"%d\", "));
-                                                                    if($2->type == TEXT)
+                    | PRINT term END_OF_LINE                    {   
+                                                                    $$ = create_node(EMPTY, NULL);
+                                                                    if($2->type == NUMBER_T)
+                                                                        append_node($$, create_node(CONSTANT, "printf(\"%d\\n\", "));
+                                                                    if($2->type == TEXT_T)
                                                                         append_node($$, create_node(CONSTANT, "printf(\"%s\", "));
                                                                     append_node($$, $2);
                                                                     append_node($$, create_node(CONSTANT, ");"));
                                                                 }
 
-                    | READ INTO VARNAME END_OF_LINE             {   $$ = create_node(EMPTY, NULL);
-                                                                    if($3->type == NUMBER)
+                    | READ INTO VARNAME END_OF_LINE             {   check_var($3,-1);
+                                                                    int var_type = get_var_type($3);
+                                                                    $$ = create_node(EMPTY, NULL);
+                                                                    if(var_type == NUMBER_T)
                                                                         append_node($$, create_node(CONSTANT, "scanf(\"%d\", &"));
-                                                                    if($3->type == TEXT)
+                                                                    if(var_type == TEXT_T)
                                                                         append_node($$, create_node(CONSTANT, "scanf(\"%s\", "));
                                                                     append_node($$, $3);
                                                                     append_node($$, create_node(CONSTANT, ");"));
@@ -106,7 +113,6 @@
                                                                                             append_node($$, create_node(CONSTANT, "}"));
                                                                                             append_node($$, $9);
                                                                                         }
-                    }
                     ;
     
     else:           ELSE DO COLON code END                      {   $$ = create_node(EMPTY, NULL);
@@ -143,9 +149,9 @@
                                                                 }
                     ;
 
-    type:           NUMBER                                      {   $$ = create_node(NUMBER, "int ");   }
+    type:           NUMBER                                      {   $$ = create_node(NUMBER_T, "int ");   }
                     
-                    | TEXT                                      {   $$ = create_node(TEXT, "char* ");   }
+                    | TEXT                                      {   $$ = create_node(TEXT_T, "char* ");   }
                     ;
 
     op:             PLUS                                        {   $$ = create_node(OPERATION, "+");   }
@@ -176,26 +182,43 @@
                                                                     append_node($$, create_node(CONSTANT, " )"));}
                     ;
 
-    term:           NUMBER_VAL                                  {   $$ = create_node(NUMBER, $1);   }
+    term:           NUMBER_VAL                                  {   $$ = create_node(NUMBER_T, $1);   }
 
-                    | TEXT_VAL                                  {   $$ = create_node(TEXT, $1);   }
+                    | TEXT_VAL                                  {   $$ = create_node(TEXT_T, $1);   }
 
-                    | VARNAME                                   {   $$ = create_node(CONSTANT, $1);   }
+                    | VARNAME                                   {   
+                                                                    int var_type = get_var_type($1);
+                                                                    if(var_type == -1)
+                                                                        yyerror("Undefined variable");
+                                                                    $$ = create_node(var_type, $1);   
+                                                                }
                     
-                    | VARNAME ITEM NUMBER_VAL                   {   char str[MAX_VALUE_SIZE+2+4+1];
+                    | VARNAME ITEM NUMBER_VAL                   {   
+                                                                    int var_type = get_var_type($1);
+                                                                    if(var_type == -1)
+                                                                        yyerror("Undefined variable");
+
+                                                                    char str[MAX_VALUE_SIZE+2+4+1];
                                                                     strcat(str,$1);
                                                                     strcat(str,"[");
                                                                     strcat(str,$3);
                                                                     strcat(str,"]");
-                                                                    $$ = create_node(CONSTANT, str);
+
+                                                                    $$ = create_node(var_type, str);
                                                                 }
 
-                    | VARNAME ITEM VARNAME                      {   char str[MAX_VALUE_SIZE+2+MAX_VALUE_SIZE+1];
+                    | VARNAME ITEM VARNAME                      {   
+                                                                    int var_type = get_var_type($1);
+                                                                    if(var_type == -1)
+                                                                        yyerror("Undefined variable");
+
+                                                                    char str[MAX_VALUE_SIZE+2+MAX_VALUE_SIZE+1];
                                                                     strcat(str,$1);
                                                                     strcat(str,"[");
                                                                     strcat(str,$3);
                                                                     strcat(str,"]");
-                                                                    $$ = create_node(CONSTANT, str);
+                                                                
+                                                                    $$ = create_node(var_type, str); 
                                                                 }
                     ;
 
@@ -214,20 +237,20 @@
                                                                         yyerror("Maximum amount of variables has been reached");
                                                                     $$ = create_node(EMPTY, NULL);
                                                                     append_node($$, $3);
-                                                                    append_node($$, create_node($2->type, $5));
+                                                                    append_node($$, create_node($3->type, $5));
                                                                 }
                     | CREATE LISTOF type WITH NUMBER_VAL ITEMS CALLED VARNAME   {   if(exists_var($8))
                                                                                         yyerror("Variable already exists");
-                                                                                    if($3->type != NUMBER)
+                                                                                    if($3->type != NUMBER_T)
                                                                                         yyerror("Cannot create TEXT array");
                                                                                     if(add_var($8, $3->type, 0)) // const = false
                                                                                         yyerror("Maximum amount of variables has been reached");
                                                                                     
                                                                                     $$ = create_node(EMPTY,NULL);
-                                                                                    append_node($$,$2);
+                                                                                    append_node($$,$3);
                                                                                     append_node($$,create_node($3->type,$8));
                                                                                     append_node($$, create_node(CONSTANT,"["));
-                                                                                    append_node($$, create_node(NUMBER,$5));
+                                                                                    append_node($$, create_node(NUMBER_T,$5));
                                                                                     append_node($$,create_node(CONSTANT,"]"));
                                                                                 }
                     ;
@@ -265,7 +288,7 @@
 
                     | PLEASE SAVE expression INTO VARNAME ITEM VARNAME              {   
                                                                                         check_var($5, $3->type);
-                                                                                        check_var($7, NUMBER);
+                                                                                        check_var($7, NUMBER_T);
                                                                                         $$ = create_node(EMPTY, NULL);
                                                                                         define_array_var($$, $3, $5, $7);
                                                                                         assignment_count++;
@@ -273,7 +296,7 @@
                                                                                     }
                     | SAVE expression INTO VARNAME ITEM VARNAME                     {   
                                                                                         check_var($4, $2->type);
-                                                                                        check_var($6, NUMBER);
+                                                                                        check_var($6, NUMBER_T);
                                                                                         $$ = create_node(EMPTY, NULL);
                                                                                         define_array_var($$, $2, $4, $6);
                                                                                         assignment_count++;
@@ -294,16 +317,16 @@ void check_var(char *varname, type type){
     int node_type = get_var_type(varname);
     if(node_type == -1)
         yyerror("Undefined variable");
-    if(node_type != type)
+    if(type != -1 && node_type != type)
         yyerror("Incompatible types in variable assignment");
-    if(is_const(varname) == 2)
+    if(is_var_const(varname) == 2)
         yyerror("Trying to modify const value");
 }
 
 void define_array_var(node_t *parent, node_t *expression, char *varname, char *val){
     append_node(parent, create_node(expression->type, varname));
     append_node(parent, create_node(CONSTANT,"["));
-    append_node(parent, create_node(NUMBER,val));
+    append_node(parent, create_node(NUMBER_T,val));
     append_node(parent,create_node(CONSTANT,"]"));
     append_node(parent, create_node(CONSTANT, " = "));
     append_node(parent, expression);

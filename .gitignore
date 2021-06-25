@@ -50,3 +50,11 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+#Program files
+compiler/lex.yy.c
+compiler/y.tab.c
+compiler/y.tab.h
+tmp.c
+program.out
+easygcc
