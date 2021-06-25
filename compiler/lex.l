@@ -2,6 +2,8 @@
 	#include <stdio.h>
 	#include <stdlib.h>
 	#include "y.tab.h"  /* archivo generado por yacc */
+
+  int line_no = 1;
 %}
 
 number  -?[0-9]+
@@ -38,6 +40,7 @@ string \"[^\"]*\"
 ")"                     { return CLOSE_PAR; }
 ":"                     { return COLON; }
 "."                     { return END_OF_LINE; }
+"\n"                    { line_no++; }
 "start"                 { return START; }
 "finish"                { return FINISH; }
 "start ignoring"        { return START_IGNORING; }

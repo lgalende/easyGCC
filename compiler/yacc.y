@@ -1,5 +1,6 @@
 %{
 
+    extern int line_no;
     int yylex();
 %}
 
@@ -174,7 +175,15 @@
                                                                 }
                     ;
 
-    assignment:     SAVE expression INTO VARNAME              {   $$ = create_node(EMPTY, NULL);
+    assignment:     SAVE expression INTO VARNAME              {   
+                                                                    if(!exists_var($4)){
+                                                                        yyerror("Undefined variable");
+                                                                    }
+                                                                    int node_type = get_type($4);
+                                                                    if(node_type != $2->type){
+                                                                        yyerror("Incompatible variable types" );
+                                                                    }
+                                                                    $$ = create_node(EMPTY, NULL);
                                                                     append_node($$, create_node(CONSTANT, $4));
                                                                     append_node($$, create_node(CONSTANT, " = "));
                                                                     append_node($$, $2);
@@ -182,3 +191,11 @@
                     ;
 
 %%
+
+void yyerror(char *msg){
+    fprintf(stderr, "Error in line %d: %s\n", line_no, msg);
+
+    //liberar recursos
+
+    exit(1);
+}
