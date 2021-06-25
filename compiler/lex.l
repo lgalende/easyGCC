@@ -16,6 +16,10 @@ string \"[^\"]*\"
 "const"                 { return CONST; }
 "number"                { return NUMBER; }
 "text"                  { return TEXT; }
+"list of"               { return LISTOF; }
+"with"                  { return WITH; }
+"items"                 { return ITEMS; }
+"item"                 { return ITEM; }
 "called"                { return CALLED; }
 "save"                  { return SAVE; }
 "into"                  { return INTO; }
