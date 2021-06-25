@@ -46,6 +46,7 @@ string \"[^\"]*\"
 "finish"                { return FINISH; }
 "start ignoring"        { return START_IGNORING; }
 "stop ignoring"         { return STOP_IGNORING; }
+"please"                { return PLEASE;}
 [\t \n]                 { /* if space, tab or new line, then nothing to do */ ; }
 
 {number}    {

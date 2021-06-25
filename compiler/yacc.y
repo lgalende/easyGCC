@@ -7,6 +7,8 @@
 
     extern int line_no;
     int yylex();
+    int assignment_count = 0;
+    int please_count = 0;
 %}
 
 
@@ -18,7 +20,7 @@
 /* Tokens */
 
 %token START FINISH 
-%token PRINT END_OF_LINE READ CREATE CONST CALLED SAVE INTO OPEN_PAR CLOSE_PAR COLON
+%token PRINT END_OF_LINE READ CREATE CONST CALLED SAVE INTO OPEN_PAR CLOSE_PAR COLON PLEASE
 %token WHILE REPEAT IF DO END ELSE 
 %token AND OR PLUS MINUS MULTIPLY DIVIDE GREATER LOWER EQUAL DIFF
 %token NUMBER TEXT
@@ -37,7 +39,10 @@
                                                                     append_node($$, create_node(CONSTANT, "int main(){"));
                                                                     append_node($$, $2);
                                                                     append_node($$, create_node(CONSTANT, "return 0;}"));
-                                                                    print_headers()
+                                                                    if(assignment_count > 0 && (float) please_count/assignment_count < 0.75f){
+                                                                        yyerror("You are so rude. Try being more polite.");
+                                                                    }
+                                                                    print_headers();
                                                                 }
                     ;
 
@@ -212,6 +217,22 @@
                                                                         append_node($$, create_node(TEXT_VARIABLE, $4));
                                                                     append_node($$, create_node(CONSTANT, " = "));
                                                                     append_node($$, $2);
+                                                                    assignment_count++;
+                                                                }
+                    | PLEASE SAVE expression INTO VARNAME       {   int node_type = get_var_type($4);
+                                                                    if(node_type == -1)
+                                                                        yyerror("Undefined variable");
+                                                                    if(node_type != $2->type)
+                                                                        yyerror("Incompatible types in variable assignment");
+                                                                    $$ = create_node(EMPTY, NULL);
+                                                                    if($2 == NUMBER)
+                                                                        append_node($$, create_node(NUMBER_VARIABLE, $4));
+                                                                    if($2 == TEXT)
+                                                                        append_node($$, create_node(TEXT_VARIABLE, $4));
+                                                                    append_node($$, create_node(CONSTANT, " = "));
+                                                                    append_node($$, $2);
+                                                                    assignment_count++;
+                                                                    please_count++;
                                                                 }
                     ;
 
