@@ -5,7 +5,7 @@
 variable_t symbol_table[MAX_VAR_QTY];
 unsigned int symbol_table_index = 0;
 
-int add_var(char *var_name, char type, char is_const){
+char add_var(char *var_name, char type, char is_const){
     if(symbol_table_index == MAX_VAR_QTY || 
         (type == TEXT && !is_palindrome(var_name)) || 
         (type == NUMBER && !has_even_length(var_name)))
@@ -18,26 +18,36 @@ int add_var(char *var_name, char type, char is_const){
     return 0;
 }
 
-int get_var_type(char *var_name){
+char get_var_type(char *var_name){
+    char ret = -1;
+
     for(int i=0; i < symbol_table_index; i++){
-        if(strcmp(symbol_table[i].name, var_name) == 0)
-            return symbol_table[i].type;
+        if(strcmp(symbol_table[i].name, var_name) == 0) {
+            ret = symbol_table[i].type;
+            break;
+        }
     }
 
-    return -1;  // variable not found
+    return ret;  // if -1 --> variable not found
 }
 
-int exists_var(char *var_name){
+char exists_var(char *var_name){
     return get_var_type(var_name) != -1; // boolean
 }
 
-int is_var_const(char *var_name){
+char is_var_const(char *var_name){
+    char ret = -1;
+
     for(int i=0; i < symbol_table_index; i++){
-        if(strcmp(symbol_table[i].name, var_name) == 0)
-            return symbol_table[i].is_const;
+        if(strcmp(symbol_table[i].name, var_name) == 0) {
+            ret = symbol_table[i].is_const;
+            if(ret == 1) // constante sin inicializar
+                symbol_table[i].is_const = 2; // constante inicializada
+            break;
+        }
     }
 
-    return -1;  // variable not found, shouldn't happen
+    return ret;  // if -1 --> variable not found, shouldn't happen
 }
 
 int is_palindrome(char * name){

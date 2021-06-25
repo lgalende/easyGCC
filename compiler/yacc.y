@@ -296,6 +296,8 @@ void check_var(char *varname, type type){
         yyerror("Undefined variable");
     if(node_type != type)
         yyerror("Incompatible types in variable assignment");
+    if(is_const(varname) == 2)
+        yyerror("Trying to modify const value");
 }
 
 void define_array_var(node_t *parent, node_t *expression, char *varname, char *val){
