@@ -3,10 +3,10 @@
 
 typedef enum operations {PLUS, MINUS, DIVIDE, MULTIPLY} operation;
 
-node_t * make_expression(node_t * exp1, node_t * exp2, node_t * op){
+node_t * make_expression(node_t * exp1, node_t * op, node_t * exp2){
     node_t * ret;
     if(op->type == OPERATION){
-        switch ((char) op->value)
+        switch (op->value[0])
         {
         case '+':
             return plus_expression(exp1, exp2);

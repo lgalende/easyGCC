@@ -1,4 +1,5 @@
 #include "node.h"
+#include "compiler.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -27,16 +28,15 @@ void append_node(node_t * parent, node_t * node){
     node->parent = parent;
 }
 
-void spitOutCode(node_t * node) {
+void spit_out_code(node_t * node) {
     if(node->type == EMPTY) {
         node_t * aux = node->children;
         while(aux != NULL) {
-            printInorder(aux);
+            spit_out_code(aux);
             aux = aux->next;
         }
     }else if(node->type != EMPTY && node->value != NULL) {
-        FILE *output;
-        fprintf(output, "%s", node->value);
+        fprintf(tmpFile, "%s", node->value);
     }
 
 }

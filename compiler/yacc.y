@@ -1,5 +1,8 @@
 %{
-
+    #include <stdio.h>
+    #include "node.h"
+    #include "operations.h"
+    #include "compiler.h"
     extern int line_no;
     int yylex();
 %}
@@ -32,6 +35,7 @@
                                                                     append_node($$, create_node(CONSTANT, "int main(){"));
                                                                     append_node($$, $2);
                                                                     append_node($$, create_node(CONSTANT, "return 0;}"));
+                                                                    print_headers()
                                                                 }
                     ;
 
