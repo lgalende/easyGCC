@@ -28,12 +28,17 @@ node_t * make_expression(node_t * n1, node_t * op, node_t * n2){
             }
             break;
         case '/':
-            ret = expressions(" / ", n1, n2);
-            if( ret->type == EMPTY){
-                //ERROR
-                //TODO Poner en ret empty y devolver.
-                return;
-            } 
+            //VERIFICAR SI n2 ES 0
+            if(is_cero(n2)){
+                //ERRORRRRRRRR No se puede dividir por cero
+            }else{
+                ret = expressions(" / ", n1, n2);
+                if(ret->type == EMPTY){
+                    //ERROR
+                    //TODO Poner en ret empty y devolver.
+                    return;
+                } 
+            }
             break;
         
         default:
@@ -45,49 +50,37 @@ node_t * make_expression(node_t * n1, node_t * op, node_t * n2){
     
 }
 
-int isNumber(node_t * n){
-    if(n->type == NUMBER || n->type == NUMBER_VARIABLE)
-        return TRUE;
-    return FALSE;
+int is_number(node_t * n){
+    return n->type == NUMBER;
 }
 
-int isText(node_t * n){
-    if(n->type == TEXT)
-        return TRUE;
-    return FALSE;
+int is_text(node_t * n){
+    return n->type == TEXT;
 }
 
-int isNumberVariable(node_t * n){
-    if(n->type == NUMBER_VARIABLE)
-        return TRUE;
-    return FALSE;
+int is_cero(node_t * n){
+    return is_number(n) && n->value == 0;
 }
-
-/*int isTextVariable(node_t * n){
-    if(n->type == TEXT_VARIABLE)
-        return TRUE;
-    return FALSE;
-}*/
 
 node_t * number_operation(char * op, node_t * n1, node_t * n2){
     node_t * ret = create_node(EMPTY, NULL);
-    append(ret, n1);
-    append(ret, op);
-    append(ret, n2);
+    append_node(ret, n1);
+    append_node(ret, create_node(CONSTANT, op));
+    append_node(ret, n2);
     return ret;
 }
 
 node_t * plus_expression(node_t * n1, node_t * n2){
     node_t * ret;
-    if(isNumber(n1) && isNumber(n2))
+    if(is_number(n1) && is_number(n2))
         ret = number_operation(" + ", n1, n2);
-    else if(isText(n1) && isText(n2)){
+    else if(is_text(n1) && is_text(n2)){
         ret = create_node(EMPTY, NULL);
-        /*append(ret, "strcat(strcat(");
-        append(ret, n1);
-        append(ret, ",\" + \"), ");
-        append(ret, n2);*/
-        //ACA HACER EL STRCAT. Crear funcion para concatenar strings?
+        append_node(ret, create_node(CONSTANT, "sum_strings(")); //TODO crear esto
+        append_node(ret, n1);
+        append_node(ret, ",");
+        append_node(ret, n2);
+        append_node(ret, ");");
     } else {
         //ERROR, No se puede hacer dicha operacion
         ret = create_node(EMPTY, NULL); //Poner NULL en ret?
@@ -96,36 +89,9 @@ node_t * plus_expression(node_t * n1, node_t * n2){
     return ret;
 }
 
-node_t * minus_expression(node_t * n1, node_t * n2){
-    node_t * ret;
-    if(isNumber(n1) && isNumber(n2))
-        ret = number_operation(" - ", n1, n2);
-    else{
-        //ERROR, unicamente se puede restar dos NUMBER
-        ret = create_node(EMPTY, NULL); //Poner NULL en ret?
-        return;
-    }
-    return ret;
-}
-
-node_t * divide_expression(char * op, node_t * n1, node_t * n2){
-    node_t * ret;
-    if(isNumber(n1) && isNumber(n2)){
-        if(isNumberVariable(n2)){
-            //Verificar que esa variable no sea 0
-        }else if(n2->value == 0){
-                //ERRORRRR NO se puede dividir por cero
-                return create_node(EMPTY, NULL);
-            }
-        ret = number_operation(op, n1, n2);
-    }
-    ret = create_node(EMPTY, NULL); //Poner null en ret y devolverlo?
-    return ret;
-}
-
 node_t * expressions(char * op, node_t * n1, node_t * n2){
     node_t * ret;
-    if(isNumber(n1) && isNumber(n2))
+    if(is_number(n1) && is_number(n2))
         ret = number_operation(op, n1, n2);
     else
         ret = create_node(EMPTY, NULL); //Poner null en ret y devolverlo?

@@ -137,7 +137,7 @@
 
     type:           NUMBER                                      {   $$ = create_node(NUMBER, "int ");   }
                     
-                    | TEXT                                      {   $$ = create_node(NUMBER, "char* ");   }
+                    | TEXT                                      {   $$ = create_node(TEXT, "char* ");   }
                     ;
 
     op:             PLUS                                        {   $$ = create_node(OPERATION, "+");   }
@@ -181,10 +181,7 @@
                                                                         yyerror("Maximum amount of variables has been reached");
                                                                     $$ = create_node(EMPTY, NULL);
                                                                     append_node($$, $2);
-                                                                    if($2 == NUMBER)
-                                                                        append_node($$, create_node(NUMBER_VARIABLE, $4));
-                                                                    if($2 == TEXT)
-                                                                        append_node($$, create_node(TEXT_VARIABLE, $4));
+                                                                    append_node($$, create_node($2, $4));
                                                                 }
 
                     | CREATE CONST type CALLED VARNAME          {   if(exists_var($5))
@@ -193,10 +190,7 @@
                                                                         yyerror("Maximum amount of variables has been reached");
                                                                     $$ = create_node(EMPTY, NULL);
                                                                     append_node($$, $3);
-                                                                    if($2 == NUMBER)
-                                                                        append_node($$, create_node(NUMBER_VARIABLE, $5));
-                                                                    if($2 == TEXT)
-                                                                        append_node($$, create_node(TEXT_VARIABLE, $5));
+                                                                    append_node($$, create_node($2, $5));
                                                                 }
                     ;
 
@@ -206,10 +200,7 @@
                                                                     if(node_type != $2->type)
                                                                         yyerror("Incompatible types in variable assignment");
                                                                     $$ = create_node(EMPTY, NULL);
-                                                                    if($2 == NUMBER)
-                                                                        append_node($$, create_node(NUMBER_VARIABLE, $4));
-                                                                    if($2 == TEXT)
-                                                                        append_node($$, create_node(TEXT_VARIABLE, $4));
+                                                                    append_node($$, create_node($2, $4));
                                                                     append_node($$, create_node(CONSTANT, " = "));
                                                                     append_node($$, $2);
                                                                 }
