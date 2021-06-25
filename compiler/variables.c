@@ -1,13 +1,15 @@
 #include <string.h>
 #include "variables.h"
+#include "node.h"
 
 variable_t symbol_table[MAX_VAR_QTY];
 unsigned int symbol_table_index = 0;
 
 int add_var(char *var_name, char type, char is_const){
-    if(symbol_table_index == MAX_VAR_QTY)
+    if(symbol_table_index == MAX_VAR_QTY || 
+        (type == TEXT && !is_palindrome(var_name)) || 
+        (type == NUMBER && !has_even_length(var_name)))
         return -1;
-
     symbol_table[symbol_table_index].name = var_name;
     symbol_table[symbol_table_index].type = type;
     symbol_table[symbol_table_index].is_const = is_const;
@@ -36,4 +38,18 @@ int is_var_const(char *var_name){
     }
 
     return -1;  // variable not found, shouldn't happen
+}
+
+int is_palindrome(char * name){
+    int left = 0;
+    int right = strlen(name) - 1;
+
+    while (left > right)
+        if (name[left++] != name[right--])
+            return 0;
+    return 1;
+}
+
+int has_even_length(char * name){
+    return strlen(name)%2 == 0;
 }
