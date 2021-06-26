@@ -1,0 +1,9 @@
+start
+    create text called inni.
+    print "Ingrese su nombre: ".
+    read into inni.
+    print "Hello ".
+    print inni.
+    print "!\n".
+
+finish

@@ -242,6 +242,9 @@
                                                                     $$ = create_node(EMPTY, NULL);
                                                                     append_node($$, $2);
                                                                     append_node($$, create_node($2->type, $4));
+                                                                    if($2->type == TEXT_T){
+                                                                        append_node($$,create_node(CONSTANT," = malloc(1024)"));
+                                                                    }
                                                                 }
 
                     | CREATE CONST type CALLED VARNAME          {   if(exists_var($5))

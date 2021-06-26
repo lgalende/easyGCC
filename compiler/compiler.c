@@ -11,22 +11,18 @@ struct input_output
     char *output;
 } input_output;
 
-static char * add_function = "char* sum_strings(char * str1, char * str2){\n"
-                                "char* aux = malloc(strlen(str1) + strlen(str2) + 1);\n"
-                                "strcpy(aux, str1);\n"
-                                "strcat(aux, str2);\n"
-                                "return aux;}\n\n";
+static char *add_function = "char* sum_strings(char * str1, char * str2){\n"
+                            "char* aux = malloc(strlen(str1) + strlen(str2) + 1);\n"
+                            "strcpy(aux, str1);\n"
+                            "strcat(aux, str2);\n"
+                            "return aux;}\n\n";
 
 void print_headers()
 {
     fprintf(c_file, "#include <stdlib.h>\n");
-    // fprintf(c_file, "#include <math.h>\n");
-    // fprintf(c_file, "#include <time.h>\n");
-    // fprintf(c_file, "#include <unistd.h>\n");
     fprintf(c_file, "#include <string.h>\n");
-    // fprintf(c_file, "#include <termios.h>\n");
     fprintf(c_file, "#include <stdio.h>\n");
-    fprintf(c_file, "%s" , add_function);
+    fprintf(c_file, "%s", add_function);
 }
 
 void initialize_yacc_input(char *easygcc_script)
