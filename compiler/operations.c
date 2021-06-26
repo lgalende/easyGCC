@@ -29,7 +29,7 @@ node_t *make_expression(node_t *n1, node_t *op, node_t *n2)
             {
                 //ERROR
                 //TODO Poner en ret empty y devolver.
-                return;
+                return create_node(EMPTY, NULL);
             }
             break;
         case '*':
@@ -38,7 +38,7 @@ node_t *make_expression(node_t *n1, node_t *op, node_t *n2)
             {
                 //ERROR
                 //TODO Poner en ret empty y devolver.
-                return;
+                return create_node(EMPTY, NULL);
             }
             break;
         case '/':
@@ -46,6 +46,7 @@ node_t *make_expression(node_t *n1, node_t *op, node_t *n2)
             if (is_zero(n2))
             {
                 //ERRORRRRRRRR No se puede dividir por cero
+                return create_node(EMPTY, NULL);
             }
             else
             {
@@ -54,12 +55,9 @@ node_t *make_expression(node_t *n1, node_t *op, node_t *n2)
                 {
                     //ERROR
                     //TODO Poner en ret empty y devolver.
-                    return;
+                    return create_node(EMPTY, NULL);
                 }
             }
-            break;
-
-        default:
             break;
         }
         return ret;
@@ -83,7 +81,7 @@ int is_zero(node_t *n)
 
 node_t *number_operation(node_t *op, node_t *n1, node_t *n2)
 {
-    node_t *ret = create_node(NUMBER_T, NULL); //TODO: revisar
+    node_t *ret = create_node(NUMBER_T, NULL); //TODO: revisar. Es NUMBER_T o EMPTY?
     append_node(ret, n1);
     append_node(ret, op);
     append_node(ret, n2);
