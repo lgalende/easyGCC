@@ -128,7 +128,7 @@
                                                                     append_node($$, create_node(CONSTANT, "}"));
                                                                 }
 
-                    // TODO AGREGAR PRODUCCION LAMBDA
+                    |                                           { $$ = NULL;}
                     ;
 
     condition:      expression comparator expression            {   $$ = create_node(EMPTY, NULL);
