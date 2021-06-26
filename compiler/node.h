@@ -10,7 +10,8 @@ typedef enum types
     NUMBER_T,
     CONSTANT,
     EMPTY,
-    OPERATION
+    OPERATION,
+    COMPARATION
 } type;
 
 typedef struct node_t

@@ -131,11 +131,7 @@
                     |                                           { $$ = NULL;}
                     ;
 
-    condition:      expression comparator expression            {   $$ = create_node(EMPTY, NULL);
-                                                                    append_node($$, $1);
-                                                                    append_node($$, $2);
-                                                                    append_node($$, $3);
-                                                                }
+    condition:      expression comparator expression            {   $$ = make_comparations($1, $2, $3); }
 
                     | condition AND condition                   {   $$ = create_node(EMPTY, NULL);
                                                                     append_node($$, $1);
@@ -172,13 +168,13 @@
                     | MODULE                                    {   $$ = create_node(OPERATION, "%");   }
                     ;
                     
-    comparator:     GREATER                                     {   $$ = create_node(CONSTANT, " > ");   }
+    comparator:     GREATER                                     {   $$ = create_node(CONSTANT, ">");   }
 
-                    | LOWER                                     {   $$ = create_node(CONSTANT, " < ");   }
+                    | LOWER                                     {   $$ = create_node(CONSTANT, "<");   }
 
-                    | EQUAL                                     {   $$ = create_node(CONSTANT, " == ");   }
+                    | EQUAL                                     {   $$ = create_node(CONSTANT, "==");   }
 
-                    | DIFF                                      {   $$ = create_node(CONSTANT, " != ");   }
+                    | DIFF                                      {   $$ = create_node(CONSTANT, "!=");   }
                     ;
 
     expression:     term                                        {   $$ = $1;    }
