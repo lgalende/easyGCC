@@ -36,6 +36,7 @@ string \"[^\"]*\"
 "minus"                 { return MINUS; }
 "multiplied by"         { return MULTIPLY; }
 "divided by"            { return DIVIDE; }
+"module"                { return MODULE; }
 "or"                    { return OR; }
 "and"                   { return AND; }
 "if"                    { return IF; }

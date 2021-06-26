@@ -27,6 +27,7 @@ node_t *make_expression(node_t *n1, node_t *op, node_t *n2)
         case '*':
             ret = expressions(op, n1, n2);
             break;
+        case '%':
         case '/':
             if (is_zero(n2))
                 yyerror("Cannot divide by cero. Expression on the rigth of the division must not be equal to cero.\n");

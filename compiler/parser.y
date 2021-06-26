@@ -29,7 +29,7 @@
 %token START FINISH 
 %token PRINT END_OF_LINE READ CREATE CONST CALLED SAVE INTO OPEN_PAR CLOSE_PAR COLON PLEASE
 %token WHILE REPEAT IF DO END ELSE 
-%token AND OR PLUS MINUS MULTIPLY DIVIDE GREATER LOWER EQUAL DIFF
+%token AND OR PLUS MINUS MULTIPLY DIVIDE MODULE GREATER LOWER EQUAL DIFF
 %token NUMBER TEXT LISTOF WITH ITEMS ITEM
 
 %type<node> program code instruction declaration assignment term condition else expression comparator type op
@@ -168,6 +168,8 @@
                     | MULTIPLY                                  {   $$ = create_node(OPERATION, "*");   }
 
                     | DIVIDE                                    {   $$ = create_node(OPERATION, "/");   }
+
+                    | MODULE                                    {   $$ = create_node(OPERATION, "%");   }
                     ;
                     
     comparator:     GREATER                                     {   $$ = create_node(CONSTANT, " > ");   }
