@@ -1,3 +1,30 @@
-start ignoring
-Implementacion, en lenguaje ecc (easyC), de funcion para comparar dos strings.
-stop ignoring
+start
+    create text called txt.
+    create text called vav.
+
+    please save "Infocracks" into txt.
+    please save "TLA" into vav.
+
+    if (txt is equal to txt) do:
+        print txt. print " is equal to ". print txt. print "\n".
+    end
+
+    if(txt is equal to vav) do:
+        print "This is fake\n".
+    end
+    else do:
+        print txt. print " is different from ". print vav. print "\n".
+        print "And also: ".
+        if(txt is greater than vav) do:
+            print txt. print " is greater than ". print vav. print "\n".
+        end
+        else do:
+            print vav. print " is greater than ". print txt. print "\n".
+        end
+    end
+    
+    create text called summus.
+    please save txt plus vav into summus.
+
+    print txt. print " + ". print vav. print " = ". print summus. print "\n".
+finish

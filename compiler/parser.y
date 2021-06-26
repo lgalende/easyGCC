@@ -185,7 +185,7 @@
 
                     | expression op expression                  {   $$ = make_expression($1, $2, $3);   }
 
-                    | OPEN_PAR expression CLOSE_PAR             {   $$ = create_node(EMPTY, NULL);
+                    | OPEN_PAR expression CLOSE_PAR             {   $$ = create_node($2->type, NULL);
                                                                     append_node($$, create_node(CONSTANT, "( "));
                                                                     append_node($$, $2);
                                                                     append_node($$, create_node(CONSTANT, " )"));}

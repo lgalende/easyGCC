@@ -1,0 +1,38 @@
+start
+    create number called alfa.
+    create number called beta.
+    create number called resx.
+
+    please save 10 into alfa.
+    please save 7 into beta.
+
+    print "Alfa: ".
+    print alfa.
+    print "Beta: ".
+    print beta.
+
+    please save alfa plus beta into resx.
+    print "Alfa + Beta = ".
+    print resx.
+
+    please save alfa minus beta into resx.
+    print "Alfa - Beta = ".
+    print resx.
+
+    please save alfa multiplied by beta into resx.
+    print "Alfa * Beta = ".
+    print resx.
+    
+    please save alfa divided by beta into resx.
+    print "Alfa / Beta = ".
+    print resx.
+
+    please save alfa module beta into resx.
+    print "Alfa % Beta = ".
+    print resx.
+
+    please save alfa plus (beta multiplied by (15 module 6) minus 28 divided by beta) into resx.
+    print "Alfa + (Beta * (15 % 6) - 28 / Beta) = ".
+    print resx.
+
+finish

@@ -70,12 +70,12 @@ node_t *plus_expression(node_t *op, node_t *n1, node_t *n2)
         ret = number_operation(op, n1, n2);
     else if (is_text(n1) && is_text(n2))
     {
-        ret = create_node(EMPTY, NULL);
+        ret = create_node(TEXT_T, NULL);
         append_node(ret, create_node(CONSTANT, "sum_strings("));
         append_node(ret, n1);
-        append_node(ret, ",");
+        append_node(ret, create_node(CONSTANT, ", "));
         append_node(ret, n2);
-        append_node(ret, ");");
+        append_node(ret, create_node(CONSTANT, ");"));
     }
     else
         yyerror("Plus operation can only be made with both expressions of the same type(eg.NUMBER plus NUMBER).\n");
