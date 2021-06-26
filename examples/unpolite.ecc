@@ -3,11 +3,9 @@ start
     please save "Hola\n" into varav.
     print varav.
 
-    create number called vari.
     create list of number with 3 items called numslist.
-    please save 12 into vari.
-    please save vari into numslist item 0.
-    please save 13 into numslist item 1.
+    save 86 into numslist item 0.
+    save 13 into numslist item 1.
     save 1 into numslist item 2.
 
     create number called indexx.
@@ -18,15 +16,6 @@ start
     while (indexx is lower than 3) repeat:
         print numslist item indexx.
         please save indexx plus 1 into indexx.
-    end
-    print "Valor final de indexx:".
-    print indexx.
-
-    print "Imprimir desc. hasta el digito: ".
-    read into indexx.
-    while (indexx is greater than 0) repeat:
-        print indexx.
-        please save indexx minus 1 into indexx.
     end
     
 finish

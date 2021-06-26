@@ -1,3 +1,16 @@
-start ignoring
-Implementacion, en lenguaje ecc (easyC), de funcion para calcular el factorial de un numero.
-stop ignoring
+start
+    create number called nn.
+    create number called fact.
+    please save 1 into fact.
+    print "Ingrese N y calcule factorial(N): ".
+    read into nn.
+
+    while ( nn is different from 0) repeat:
+        please save fact multiplied by nn into fact.
+        please save nn minus 1 into nn.
+    end
+
+    print "Result: ".
+    print fact.
+    
+finish

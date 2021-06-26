@@ -4,6 +4,7 @@
     #include "node.h"
     #include "compiler.h"
     #include "variables.h"
+    #include "operations.h"
 
     #define MAX_VALUE_SIZE 1024
 
@@ -36,6 +37,12 @@
 %token<value> NUMBER_VAL TEXT_VAL VARNAME
 
 %start  program
+
+%left PLUS MINUS
+%left MULTIPLY DIVIDE
+%nonassoc EQUAL DIFF GREATER LOWER
+%left AND
+%left OR
 
 
 /* Producciones */
@@ -92,7 +99,7 @@
                                                                         append_node($$, create_node(CONSTANT, "scanf(\"%d\", &"));
                                                                     if(var_type == TEXT_T)
                                                                         append_node($$, create_node(CONSTANT, "scanf(\"%s\", "));
-                                                                    append_node($$, $3);
+                                                                    append_node($$, create_node(var_type,$3));
                                                                     append_node($$, create_node(CONSTANT, ");"));
                                                                 }
 
@@ -198,18 +205,22 @@
                                                                     if(var_type == -1)
                                                                         yyerror("Undefined variable");
 
-                                                                    char str[MAX_VALUE_SIZE+2+4+1];
-                                                                    strcat(str,$1);
-                                                                    strcat(str,"[");
-                                                                    strcat(str,$3);
-                                                                    strcat(str,"]");
-
-                                                                    $$ = create_node(var_type, str);
+                                                                    // char str[MAX_VALUE_SIZE+2+4+1];
+                                                                    // strcat(str,$1);
+                                                                    // strcat(str,"[");
+                                                                    // strcat(str,$3);
+                                                                    // strcat(str,"]");
+                                                                    //$$ = create_node(var_type, str);
+                                                                    $$ = create_node(var_type, NULL); //TODO: revisar
+                                                                    append_node($$, create_node(var_type, $1));
+                                                                    append_node($$, create_node(CONSTANT,"["));
+                                                                    append_node($$, create_node(NUMBER_T,$3));
+                                                                    append_node($$,create_node(CONSTANT,"]"));
                                                                 }
 
                     | VARNAME ITEM VARNAME                      {   
                                                                     int var_type = get_var_type($1);
-                                                                    if(var_type == -1)
+                                                                    if(var_type == -1 || get_var_type($3) == -1)
                                                                         yyerror("Undefined variable");
 
                                                                     char str[MAX_VALUE_SIZE+2+MAX_VALUE_SIZE+1];
@@ -293,6 +304,7 @@
                                                                                         define_array_var($$, $3, $5, $7);
                                                                                         assignment_count++;
                                                                                         please_count++;
+                                                                                        
                                                                                     }
                     | SAVE expression INTO VARNAME ITEM VARNAME                     {   
                                                                                         check_var($4, $2->type);

@@ -17,8 +17,6 @@ char add_var(char *var_name, char type, char is_const)
     symbol_table[symbol_table_index].is_const = is_const;
     symbol_table_index++;
 
-    printf("Var: %s - Type: %d\n", var_name, (int)type);
-
     return 0;
 }
 

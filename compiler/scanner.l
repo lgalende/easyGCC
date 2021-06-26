@@ -43,6 +43,7 @@ string \"[^\"]*\"
 "while"                 { return WHILE; }
 "repeat"                { return REPEAT; }
 "do"                    { return DO; }
+"end"                   { return END; }
 "("                     { return OPEN_PAR; }
 ")"                     { return CLOSE_PAR; }
 ":"                     { return COLON; }

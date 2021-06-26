@@ -58,3 +58,6 @@ compiler/y.tab.h
 tmp.c
 program.out
 easygcc
+
+#VSCode
+.vscode/
