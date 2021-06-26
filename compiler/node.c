@@ -35,19 +35,6 @@ void append_node(node_t *parent, node_t *node)
 
 void spit_out_code(node_t *node)
 {
-    // if (node->type == EMPTY)
-    // {
-    //     node_t *aux = node->children;
-    //     while (aux != NULL)
-    //     {
-    //         spit_out_code(aux);
-    //         aux = aux->next;
-    //     }
-    // }
-    // else if (node->type != EMPTY && node->value != NULL)
-    // {
-    //     fprintf(c_file, "%s", node->value);
-    // }
     if (node->value != EMPTY && node->value != NULL)
     {
         fprintf(c_file, "%s", node->value);
@@ -61,4 +48,19 @@ void spit_out_code(node_t *node)
             aux = aux->next;
         }
     }
+}
+
+int is_number(node_t *n)
+{
+    return n->type == NUMBER_T;
+}
+
+int is_text(node_t *n)
+{
+    return n->type == TEXT_T;
+}
+
+int is_zero(node_t *n)
+{
+    return is_number(n) && n->value == 0;
 }

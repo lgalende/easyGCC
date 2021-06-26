@@ -8,7 +8,8 @@ node_t *expressions(node_t *op, node_t *n1, node_t *n2);
 node_t *make_expression(node_t *n1, node_t *op, node_t *n2)
 {
     node_t *ret;
-    if (op->type == OPERATION){
+    if (op->type == OPERATION)
+    {
         switch (op->value[0])
         {
         case '+':
@@ -28,21 +29,6 @@ node_t *make_expression(node_t *n1, node_t *op, node_t *n2)
         }
         return ret;
     }
-}
-
-int is_number(node_t *n)
-{
-    return n->type == NUMBER_T;
-}
-
-int is_text(node_t *n)
-{
-    return n->type == TEXT_T;
-}
-
-int is_zero(node_t *n)
-{
-    return is_number(n) && n->value == 0;
 }
 
 node_t *number_operation(node_t *op, node_t *n1, node_t *n2)

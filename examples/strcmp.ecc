@@ -3,10 +3,10 @@ start
     create text called vav.
 
     please save "Infocracks" into txt.
-    please save "TLA" into vav.
+    please save "Infocrack" into vav.
 
-    if (txt is equal to txt) do:
-        print txt. print " is equal to ". print txt. print "\n".
+    if (txt is equal to "Infocracks") do:
+        print txt. print " is equal to ". print "Infocracks". print "\n".
     end
 
     if(txt is equal to vav) do:
@@ -15,7 +15,7 @@ start
     else do:
         print txt. print " is different from ". print vav. print "\n".
         print "And also: ".
-        if(txt is greater than vav) do:
+        if(vav is greater than vav) do:
             print txt. print " is greater than ". print vav. print "\n".
         end
         else do:

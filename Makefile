@@ -2,7 +2,7 @@ all:
 	cd compiler; \
 	yacc -d parser.y; \
 	lex scanner.l; \
-	gcc -o ../easygcc y.tab.c lex.yy.c node.c operations.c variables.c compiler.c
+	gcc -o ../easygcc y.tab.c lex.yy.c node.c operations.c comparations.c variables.c compiler.c
 
 clean:
 	rm -f easygcc; \

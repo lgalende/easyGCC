@@ -5,6 +5,7 @@
     #include "compiler.h"
     #include "variables.h"
     #include "operations.h"
+    #include "comparations.h"
 
     #define MAX_VALUE_SIZE 1024
 
@@ -131,7 +132,7 @@
                     |                                           { $$ = NULL;}
                     ;
 
-    condition:      expression comparator expression            {   $$ = make_comparations($1, $2, $3); }
+    condition:      expression comparator expression            {   $$ = make_comparation($1, $2, $3); }
 
                     | condition AND condition                   {   $$ = create_node(EMPTY, NULL);
                                                                     append_node($$, $1);
@@ -168,13 +169,13 @@
                     | MODULE                                    {   $$ = create_node(OPERATION, "%");   }
                     ;
                     
-    comparator:     GREATER                                     {   $$ = create_node(CONSTANT, ">");   }
+    comparator:     GREATER                                     {   $$ = create_node(COMPARATION, ">");   }
 
-                    | LOWER                                     {   $$ = create_node(CONSTANT, "<");   }
+                    | LOWER                                     {   $$ = create_node(COMPARATION, "<");   }
 
-                    | EQUAL                                     {   $$ = create_node(CONSTANT, "==");   }
+                    | EQUAL                                     {   $$ = create_node(COMPARATION, "==");   }
 
-                    | DIFF                                      {   $$ = create_node(CONSTANT, "!=");   }
+                    | DIFF                                      {   $$ = create_node(COMPARATION, "!=");   }
                     ;
 
     expression:     term                                        {   $$ = $1;    }
