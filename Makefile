@@ -1,3 +1,5 @@
+.PHONY=clean all
+
 all:
 	cd compiler; \
 	yacc -d parser.y; \

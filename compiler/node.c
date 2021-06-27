@@ -35,7 +35,7 @@ void append_node(node_t *parent, node_t *node)
 
 void spit_out_code(node_t *node)
 {
-    if (node->value != EMPTY && node->value != NULL)
+    if (node->type != EMPTY && node->value != NULL)
     {
         fprintf(c_file, "%s", node->value);
     }

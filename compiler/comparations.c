@@ -1,6 +1,8 @@
 #include "comparations.h"
 #include <string.h>
 
+extern int yyerror(char *msg);
+
 node_t *make_comparation(node_t *n1, node_t *comp, node_t *n2)
 {
     node_t *ret;

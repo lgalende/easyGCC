@@ -53,6 +53,7 @@ string \"[^\"]*\"
 "start"                 { return START; }
 "finish"                { return FINISH; }
 "please"                { return PLEASE;}
+"ignore:".*             {;}
 [\t ]                 { /* if space, tab or new line, then nothing to do */ ; }
 
 {number}    {

@@ -1,0 +1,33 @@
+start
+    ignore: Agregar/Borrar los ignore para quitar los errores de compilacion
+    
+    ignore: Variable no definida
+    ignore: create number called os. ignore: Borrar ignore
+    please save 10 into os.
+
+    ignore: Variable ya declarada
+    create text called osso.
+    please save "Error" into osso.
+    create text called osso. ignore: Agregar ignore
+
+    ignore: Variable constante
+    create const number called pi.
+    please save 3 into pi.
+    please save 4 into pi. ignore: Agregar ignore
+
+    ignore: Tipos incompatibles
+    create number called numb.
+    please save "Hola" into numb. ignore: Agregar ignore
+
+    ignore: Aritmetica no valida de text
+    create text called pl.
+    please save "Hola" multiplied by "Chau" into pl. ignore: Agregar ignore
+
+    ignore: Nombre de variable number de longitud impar
+    create number called impar. ignore: Agregar ignore
+
+    ignore: Nombre de variable text que no es palindromo
+    create text called variable. ignore: Agregar ignore
+    
+
+finish

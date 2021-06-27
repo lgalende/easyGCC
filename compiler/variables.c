@@ -2,15 +2,21 @@
 #include "variables.h"
 #include "node.h"
 
+extern int yyerror(char *msg);
+int is_palindrome(char *name);
+int has_even_length(char *name);
+
 variable_t symbol_table[MAX_VAR_QTY];
 unsigned int symbol_table_index = 0;
 
 char add_var(char *var_name, char type, char is_const)
 {
-    if (symbol_table_index == MAX_VAR_QTY ||
-        (type == TEXT_T && !is_palindrome(var_name)) ||
-        (type == NUMBER_T && !has_even_length(var_name)))
-        return -1;
+    if (symbol_table_index == MAX_VAR_QTY)
+        yyerror("Maximum amount of variables has been reached");
+    if (type == TEXT_T && !is_palindrome(var_name))
+        yyerror("Variable name is not a palindrome");
+    if (type == NUMBER_T && !has_even_length(var_name))
+        yyerror("Length of variable name is not even");
 
     symbol_table[symbol_table_index].name = var_name;
     symbol_table[symbol_table_index].type = type;
@@ -63,7 +69,7 @@ int is_palindrome(char *name)
     int left = 0;
     int right = strlen(name) - 1;
 
-    while (left > right)
+    while (right > left)
         if (name[left++] != name[right--])
             return 0;
     return 1;

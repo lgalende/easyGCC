@@ -5,6 +5,8 @@ node_t *plus_expression(node_t *op, node_t *n1, node_t *n2);
 node_t *number_operation(node_t *op, node_t *n1, node_t *n2);
 node_t *expressions(node_t *op, node_t *n1, node_t *n2);
 
+extern int yyerror(char *msg);
+
 node_t *make_expression(node_t *n1, node_t *op, node_t *n2)
 {
     node_t *ret;

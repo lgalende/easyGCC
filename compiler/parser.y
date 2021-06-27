@@ -234,8 +234,7 @@
 
     declaration:    CREATE type CALLED VARNAME                  {   if(exists_var($4))
                                                                         yyerror("Variable already exists");
-                                                                    if(add_var($4, $2->type, 0)) // const = false
-                                                                        yyerror("Maximum amount of variables has been reached");
+                                                                    add_var($4, $2->type, 0); // const = false
                                                                     $$ = create_node(EMPTY, NULL);
                                                                     append_node($$, $2);
                                                                     append_node($$, create_node($2->type, $4));
@@ -246,8 +245,7 @@
 
                     | CREATE CONST type CALLED VARNAME          {   if(exists_var($5))
                                                                         yyerror("Variable already exists");
-                                                                    if(add_var($5, $3->type, 1)) // const = true
-                                                                        yyerror("Maximum amount of variables has been reached");
+                                                                    add_var($5, $3->type, 1); // const = true
                                                                     $$ = create_node(EMPTY, NULL);
                                                                     append_node($$, $3);
                                                                     append_node($$, create_node($3->type, $5));
@@ -256,9 +254,7 @@
                                                                                         yyerror("Variable already exists");
                                                                                     if($3->type != NUMBER_T)
                                                                                         yyerror("Cannot create TEXT array");
-                                                                                    if(add_var($8, $3->type, 0)) // const = false
-                                                                                        yyerror("Maximum amount of variables has been reached");
-                                                                                    
+                                                                                    add_var($8, $3->type, 0); // const = false
                                                                                     $$ = create_node(EMPTY,NULL);
                                                                                     append_node($$,$3);
                                                                                     append_node($$,create_node($3->type,$8));
