@@ -1,0 +1,18 @@
+start
+    create list of number with 5 items called numslist.
+    print "Hay una lista con 5 items\n".
+    create number called idxx. create number called temp.
+    please save 0 into idxx.
+    while(idxx is lower than 5) repeat:
+        print "Ingrese un num para la pos ". print idxx.
+        read into temp.
+        please save temp into numslist item idxx. 
+        please save idxx plus 1 into idxx.
+    end
+    print "Ahora vamos a imprimir la lista\n".
+    please save 0 into idxx.
+    while(idxx is lower than 5) repeat:
+        print numslist item idxx.
+        please save idxx plus 1 into idxx.
+    end
+finish

@@ -1,0 +1,6 @@
+start
+    create const number called pi.
+    please save 3 into pi.
+    print pi.
+    please save 4 into pi.
+finish
