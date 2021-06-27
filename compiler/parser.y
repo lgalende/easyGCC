@@ -223,13 +223,19 @@
                                                                     if(var_type == -1 || get_var_type($3) == -1)
                                                                         yyerror("Undefined variable");
 
-                                                                    char str[MAX_VALUE_SIZE+2+MAX_VALUE_SIZE+1];
-                                                                    strcat(str,$1);
-                                                                    strcat(str,"[");
-                                                                    strcat(str,$3);
-                                                                    strcat(str,"]");
+                                                                    // char str[MAX_VALUE_SIZE+2+MAX_VALUE_SIZE+1];
+                                                                    // strcat(str,$1);
+                                                                    // strcat(str,"[");
+                                                                    // strcat(str,$3);
+                                                                    // strcat(str,"]");
                                                                 
-                                                                    $$ = create_node(var_type, str); 
+                                                                    // $$ = create_node(var_type, str); 
+
+                                                                    $$ = create_node(var_type, NULL); //TODO: revisar
+                                                                    append_node($$, create_node(var_type, $1));
+                                                                    append_node($$, create_node(CONSTANT,"["));
+                                                                    append_node($$, create_node(CONSTANT,$3));
+                                                                    append_node($$,create_node(CONSTANT,"]"));
                                                                 }
                     ;
 
