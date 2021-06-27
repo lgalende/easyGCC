@@ -26,6 +26,7 @@ typedef struct node_t
 
 node_t *create_node(type type, char *value);
 void append_node(node_t *parent, node_t *node);
+void free_node(node_t *node);
 void spit_out_code(node_t *node);
 int is_number(node_t *n);
 int is_text(node_t *n);

@@ -58,6 +58,7 @@
                                                                     }
                                                                     print_headers();
                                                                     spit_out_code($$);
+                                                                    free_node($$);
                                                                 }
                     ;
 
@@ -318,7 +319,8 @@
 void yyerror(char *msg){
     fprintf(stderr, "Error in line %d: %s\n", line_no, msg);
 
-    //liberar recursos
+    void finish_parse();
+    remove(TMP_FILE_NAME);
 
     exit(1);
 }

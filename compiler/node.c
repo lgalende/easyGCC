@@ -33,6 +33,15 @@ void append_node(node_t *parent, node_t *node)
     node->parent = parent;
 }
 
+void free_node(node_t *node)
+{
+    if (node->children != NULL)
+        free_node(node->children);
+    if (node->next != NULL)
+        free_node(node->next);
+    free(node);
+}
+
 void spit_out_code(node_t *node)
 {
     if (node->type != EMPTY && node->value != NULL)
