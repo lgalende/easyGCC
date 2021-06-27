@@ -5,6 +5,8 @@
 
 extern FILE *yyin;
 
+FILE *c_file;
+
 struct input_output
 {
     int keep;

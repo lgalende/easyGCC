@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+extern FILE *c_file;
+
 node_t *create_node(type type, char *value)
 {
     node_t *n = malloc(sizeof(node_t));
